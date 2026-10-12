@@ -41,34 +41,40 @@ function gameOver(){ended=true;paused=true;cancelAnimationFrame(raf);$('finalSta
 function roundRect(x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
 function drawFloor(){
  const camX=player.x-W/2,camY=player.y-H/2;
- // Suelo gris pizarra, mate y de bajo contraste para descansar la vista.
- ctx.fillStyle='#30322e';ctx.fillRect(0,0,W,H);
- const ox=-(camX%TILE),oy=-(camY%TILE);
- for(let y=oy-TILE;y<H+TILE;y+=TILE)for(let x=ox-TILE;x<W+TILE;x+=TILE){
-  const wx=x+camX,wy=y+camY;
-  ctx.fillStyle=(Math.floor(wx/TILE)+Math.floor(wy/TILE))%2===0?'#333530':'#30322e';
-  ctx.fillRect(x,y,TILE-1,TILE-1);
-  ctx.strokeStyle='#383a34';ctx.lineWidth=1;ctx.strokeRect(x+.5,y+.5,TILE-1,TILE-1);
+ // Piso piedra gris neutro: sin verde neón ni cuadriculado brillante.
+ ctx.fillStyle='#51524d';ctx.fillRect(0,0,W,H);
+ const tile=120,ox=-(camX%tile),oy=-(camY%tile);
+ for(let y=oy-tile;y<H+tile;y+=tile)for(let x=ox-tile;x<W+tile;x+=tile){
+  const wx=x+camX,wy=y+camY,alt=(Math.floor(wx/tile)+Math.floor(wy/tile))%2===0;
+  ctx.fillStyle=alt?'#555650':'#50514c';ctx.fillRect(x,y,tile-2,tile-2);
+  ctx.strokeStyle='#5c5d57';ctx.lineWidth=1;ctx.strokeRect(x+.5,y+.5,tile-2,tile-2);
  }
- // Calles anchas que cruzan el mapa, con bordes gastados y marcas discretas.
- ctx.fillStyle='#292b27';
- for(let road=1100;road<MAP_W;road+=1400){const sx=road-camX,sy=road-camY;ctx.fillRect(sx-56,0,112,H);ctx.fillRect(0,sy-48,W,96)}
- ctx.strokeStyle='#484a42';ctx.lineWidth=2;ctx.setLineDash([22,28]);
- for(let road=1100;road<MAP_W;road+=1400){const sx=road-camX,sy=road-camY;ctx.beginPath();ctx.moveTo(sx,0);ctx.lineTo(sx,H);ctx.stroke();ctx.beginPath();ctx.moveTo(0,sy);ctx.lineTo(W,sy);ctx.stroke()}
+ // Avenidas anchas, con marcas discretas para que se note que el mundo es grande.
+ ctx.fillStyle='#41423d';
+ for(let road=900;road<MAP_W;road+=1200){const sx=road-camX,sy=road-camY;ctx.fillRect(sx-90,0,180,H);ctx.fillRect(0,sy-76,W,152)}
+ ctx.strokeStyle='#686960';ctx.lineWidth=2;ctx.setLineDash([30,34]);
+ for(let road=900;road<MAP_W;road+=1200){const sx=road-camX,sy=road-camY;ctx.beginPath();ctx.moveTo(sx,0);ctx.lineTo(sx,H);ctx.stroke();ctx.beginPath();ctx.moveTo(0,sy);ctx.lineTo(W,sy);ctx.stroke()}
  ctx.setLineDash([]);
- // Escombros fijos repartidos por toda la zona: al caminar aparecen nuevas áreas.
- for(const d of decos){const x=d.x-camX,y=d.y-camY;if(x<-35||x>W+35||y<-35||y>H+35)continue;
-  if(d.type<.42){ctx.fillStyle='#292c27';ctx.beginPath();ctx.ellipse(x,y,d.r*1.4,d.r*.8,Math.sin(d.type*30),0,Math.PI*2);ctx.fill();ctx.strokeStyle='#42443c';ctx.stroke()}
-  else if(d.type<.72){ctx.fillStyle='#41433b';ctx.fillRect(x-6,y-5,13,10);ctx.fillStyle='#4b4d44';ctx.fillRect(x-4,y-7,8,3)}
-  else{ctx.strokeStyle='#4a4c43';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x-5,y-5);ctx.lineTo(x+5,y+5);ctx.moveTo(x+5,y-5);ctx.lineTo(x-5,y+5);ctx.stroke()}
+ for(const d of decos){const x=d.x-camX,y=d.y-camY;if(x<-40||x>W+40||y<-40||y>H+40)continue;
+  if(d.type<.42){ctx.fillStyle='#393a35';ctx.beginPath();ctx.ellipse(x,y,d.r*1.5,d.r*.85,Math.sin(d.type*30),0,Math.PI*2);ctx.fill();ctx.strokeStyle='#686960';ctx.stroke()}
+  else if(d.type<.72){ctx.fillStyle='#696a62';ctx.fillRect(x-7,y-6,15,12);ctx.fillStyle='#77786f';ctx.fillRect(x-4,y-8,8,3)}
+  else{ctx.strokeStyle='#73746b';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x-6,y-6);ctx.lineTo(x+6,y+6);ctx.moveTo(x+6,y-6);ctx.lineTo(x-6,y+6);ctx.stroke()}
  }
- // Borde del territorio y sombra suave en las esquinas.
- ctx.strokeStyle='#74776a';ctx.lineWidth=5;ctx.strokeRect(-camX,-camY,MAP_W,MAP_H);
- const vignette=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.28,W/2,H/2,Math.max(W,H)*.72);vignette.addColorStop(0,'transparent');vignette.addColorStop(1,'#11120f45');ctx.fillStyle=vignette;ctx.fillRect(0,0,W,H);
+ ctx.strokeStyle='#b4b5a8';ctx.lineWidth=7;ctx.strokeRect(-camX,-camY,MAP_W,MAP_H);
+ const vignette=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.35,W/2,H/2,Math.max(W,H)*.78);vignette.addColorStop(0,'transparent');vignette.addColorStop(1,'#17181430');ctx.fillStyle=vignette;ctx.fillRect(0,0,W,H);
+}
+function drawMiniMap(){
+ const mw=132,mh=132,x=W-mw-18,y=82,scale=(mw-14)/MAP_W;
+ ctx.save();ctx.fillStyle='#20211dcc';ctx.fillRect(x,y,mw,mh);ctx.strokeStyle='#b8b9ad';ctx.lineWidth=1.5;ctx.strokeRect(x,y,mw,mh);
+ ctx.fillStyle='#41423d';for(let road=900;road<MAP_W;road+=1200){const p=7+road*scale;ctx.fillRect(p-1,y+7,2,mh-14);ctx.fillRect(x+7,p-1,mw-14,2)}
+ ctx.fillStyle='#c7c8bc';for(const d of decos){const px=x+7+d.x*scale,py=y+7+d.y*scale;ctx.fillRect(px,py,1.4,1.4)}
+ ctx.fillStyle='#ff7465';for(const e of enemies){ctx.beginPath();ctx.arc(x+7+e.x*scale,y+7+e.y*scale,e.boss?3:1.6,0,Math.PI*2);ctx.fill()}
+ ctx.fillStyle='#d7ff69';ctx.shadowColor='#d7ff69';ctx.shadowBlur=8;ctx.beginPath();ctx.arc(x+7+player.x*scale,y+7+player.y*scale,4,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+ ctx.fillStyle='#f1f0e7';ctx.font='800 9px Inter';ctx.fillText('MAPA 6 × 6 KM',x+8,y+mh+13);ctx.restore();
 }
 function drawEnemy(e){const x=W/2+(e.x-player.x),y=H/2+(e.y-player.y),bob=Math.sin(e.phase)*2;ctx.save();ctx.translate(x,y+bob);ctx.fillStyle='#0c100b77';ctx.beginPath();ctx.ellipse(3,e.r*.7,e.r*1.25,e.r*.65,0,0,Math.PI*2);ctx.fill();if(e.boss){ctx.shadowColor='#ff624f';ctx.shadowBlur=20;ctx.fillStyle='#4e2824';ctx.beginPath();ctx.arc(0,0,e.r+3,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#ff8069';ctx.lineWidth=3;ctx.stroke();ctx.fillStyle='#8e4939';ctx.beginPath();ctx.arc(0,0,e.r-5,0,Math.PI*2);ctx.fill()}else{ctx.fillStyle=e.hit?'#f5ffd9':'#607f43';ctx.beginPath();ctx.ellipse(0,2,e.r*.8,e.r,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#9cbb67';ctx.beginPath();ctx.arc(-2,-e.r*.48,e.r*.65,0,Math.PI*2);ctx.fill();ctx.fillStyle='#202c1c';ctx.fillRect(-e.r*.5,-e.r*.55,4,3);ctx.fillRect(e.r*.2,-e.r*.55,4,3);ctx.fillStyle='#d7ff69';ctx.fillRect(-e.r*.42,-e.r*.52,2,2);ctx.fillRect(e.r*.28,-e.r*.52,2,2);ctx.strokeStyle='#32482b';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-e.r*.6,0);ctx.lineTo(-e.r-4,5);ctx.moveTo(e.r*.6,0);ctx.lineTo(e.r+4,3);ctx.stroke()}if(e.boss||e.hp<e.maxHp){const bw=e.boss?65:34;ctx.fillStyle='#10140e';ctx.fillRect(-bw/2,-e.r-13,bw,4);ctx.fillStyle=e.boss?'#ff624f':'#d7ff69';ctx.fillRect(-bw/2,-e.r-13,bw*Math.max(0,e.hp/e.maxHp),4)}ctx.restore()}
 function drawPlayer(){const x=W/2,y=H/2;ctx.save();ctx.translate(x,y);ctx.fillStyle='#0a0d0977';ctx.beginPath();ctx.ellipse(3,16,19,12,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#405a30';roundRect(-15,-12,30,34,9);ctx.fill();ctx.strokeStyle='#8aaa53';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='#d7ff69';roundRect(-11,-9,22,12,4);ctx.fill();ctx.fillStyle='#d9ae7e';ctx.beginPath();ctx.arc(0,-17,11,0,Math.PI*2);ctx.fill();ctx.fillStyle='#303b25';ctx.beginPath();ctx.arc(0,-21,12,Math.PI,Math.PI*2);ctx.fill();ctx.fillRect(-12,-21,24,5);ctx.fillStyle='#eaf5cf';ctx.fillRect(-6,-17,4,3);ctx.fillRect(3,-17,4,3);const e=nearest();if(e){const a=Math.atan2(e.y-player.y,e.x-player.x);ctx.rotate(a);ctx.fillStyle='#1b2119';roundRect(8,-4,24,9,3);ctx.fill();ctx.fillStyle='#a7bd7d';ctx.fillRect(23,-2,12,4);ctx.fillStyle='#d7ff69';ctx.fillRect(33,-1,5,2)}ctx.restore();if(player.hit>0){ctx.strokeStyle='#ff624f';ctx.lineWidth=3;ctx.beginPath();ctx.arc(x,y,28,0,Math.PI*2);ctx.stroke()}}
-function draw(){drawFloor();for(const g of gems){const x=W/2+g.x-player.x,y=H/2+g.y-player.y;ctx.save();ctx.translate(x,y);ctx.rotate(performance.now()/400+g.phase);ctx.fillStyle='#74d8ff';ctx.shadowColor='#74d8ff';ctx.shadowBlur=12;ctx.beginPath();ctx.moveTo(0,-g.r);ctx.lineTo(g.r*.8,0);ctx.lineTo(0,g.r);ctx.lineTo(-g.r*.8,0);ctx.closePath();ctx.fill();ctx.restore()}for(const b of bullets){const x=W/2+b.x-player.x,y=H/2+b.y-player.y;ctx.fillStyle='#d7ff69';ctx.shadowColor='#d7ff69';ctx.shadowBlur=13;ctx.beginPath();ctx.arc(x,y,b.r,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0}for(const e of enemies)drawEnemy(e);drawPlayer();for(const p of particles){ctx.globalAlpha=Math.max(0,p.life/.65);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(W/2+p.x-player.x,H/2+p.y-player.y,p.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;const count=enemies.length;ctx.fillStyle='#d9e4c2';ctx.font='800 10px Inter';ctx.fillText('INFECTADOS EN ZONA: '+count,20,H-68)}
+function draw(){drawFloor();for(const g of gems){const x=W/2+g.x-player.x,y=H/2+g.y-player.y;ctx.save();ctx.translate(x,y);ctx.rotate(performance.now()/400+g.phase);ctx.fillStyle='#74d8ff';ctx.shadowColor='#74d8ff';ctx.shadowBlur=12;ctx.beginPath();ctx.moveTo(0,-g.r);ctx.lineTo(g.r*.8,0);ctx.lineTo(0,g.r);ctx.lineTo(-g.r*.8,0);ctx.closePath();ctx.fill();ctx.restore()}for(const b of bullets){const x=W/2+b.x-player.x,y=H/2+b.y-player.y;ctx.fillStyle='#d7ff69';ctx.shadowColor='#d7ff69';ctx.shadowBlur=13;ctx.beginPath();ctx.arc(x,y,b.r,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0}for(const e of enemies)drawEnemy(e);drawPlayer();for(const p of particles){ctx.globalAlpha=Math.max(0,p.life/.65);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(W/2+p.x-player.x,H/2+p.y-player.y,p.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;const count=enemies.length;ctx.fillStyle='#d9e4c2';ctx.font='800 10px Inter';ctx.fillText('INFECTADOS EN ZONA: '+count,20,H-68);drawMiniMap()}
 function loop(now){if(paused||ended)return;const dt=Math.min(.035,(now-last)/1000||0);last=now;update(dt);draw();if(!paused&&!ended)raf=requestAnimationFrame(loop)}
 document.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();keys[e.key]=true;if(e.key===' '&&!menu.classList.contains('hidden'))return;if(e.key===' '&&!game.classList.contains('hidden'))togglePause();if(e.key==='Escape'&&!game.classList.contains('hidden'))togglePause()});
 document.addEventListener('keyup',e=>keys[e.key]=false);
