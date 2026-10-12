@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://germanl7.github.io/supervivencia-zombie-2d/sitemap.xml
