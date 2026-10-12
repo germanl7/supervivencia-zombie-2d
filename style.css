@@ -4,3 +4,12 @@
 
 /* Habilidades especiales con enfriamiento */
 .ability-bar{position:absolute;z-index:4;right:18px;top:150px;display:flex;flex-direction:column;gap:8px;width:112px}.ability-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 6px;background:#151c13e8;border:1px solid #d7ff6970;color:#f3f5eb;box-shadow:0 5px 20px #0005;transition:background .2s,border-color .2s}.ability-btn:hover{border-color:#d7ff69;background:#263522}.ability-btn b{font-size:20px}.ability-btn span{font-size:9px;font-weight:900;letter-spacing:.7px}.ability-btn small{font-size:8px;color:#d7ff69}.ability-btn.cooling{opacity:.58;border-color:#8b9281}.ability-btn.cooling small{color:#c0c4b8}.mobile-ability-controls{display:none;pointer-events:auto;gap:5px;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:130px}.mobile-ability-controls button{width:39px;height:39px;background:#172016e8;border:1px solid #d7ff6970;border-radius:8px;color:#d7ff69;font-size:17px;touch-action:manipulation}.mobile-ability-controls small{width:100%;text-align:right;font-size:7px;letter-spacing:.7px;color:#d7ff69}@media(max-width:650px){.ability-bar{top:auto;bottom:195px;right:12px;width:auto;flex-direction:row;gap:5px}.ability-btn{width:64px;padding:7px 3px;gap:3px}.ability-btn b{font-size:17px}.ability-btn span{font-size:7px}.ability-btn small{font-size:7px}.mobile-controls{bottom:95px;align-items:flex-end}.mobile-ability-controls{display:flex}.mobile-note{display:none}}
+
+
+/* Ajuste solicitado: habilidades más abajo y menos invasivas para dejar visible el mapa */
+.ability-bar{top:auto;bottom:132px;right:16px;width:96px;gap:6px;opacity:.88}
+.ability-btn{padding:7px 4px;background:rgba(18,25,16,.72);box-shadow:0 3px 12px #0003;backdrop-filter:blur(2px)}
+.ability-btn b{font-size:17px}
+.ability-btn span{font-size:8px}
+.ability-btn small{font-size:7px}
+@media(max-width:650px){.ability-bar{top:auto;bottom:170px;right:10px;width:auto;gap:4px}.ability-btn{width:58px;padding:6px 2px;background:rgba(18,25,16,.72)}.ability-btn b{font-size:15px}.ability-btn span,.ability-btn small{font-size:6px}}
