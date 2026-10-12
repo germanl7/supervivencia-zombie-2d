@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090d18">
+<title>Supervivencia Zombie 2D</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+<header class="topbar"><div class="logo">☣</div><div class="brand"><h1>SUPERVIVENCIA <span>ZOMBIE</span></h1><small>2D SURVIVAL · EDICIÓN NEÓN</small></div><button id="soundBtn" class="small-btn">🔊</button></header>
+<section class="hud">
+<div class="stat life"><span>❤️ VIDA</span><div class="bar"><div id="healthBar"></div></div><b id="healthText">100 / 100</b></div>
+<div class="stat"><span>🪙 MONEDAS</span><b id="coinsText">0</b></div><div class="stat"><span>☠️ OLEADA</span><b id="waveText">1</b></div><div class="stat"><span>⭐ PUNTOS</span><b id="scoreText">0</b></div>
+</section>
+<section class="arena">
+<canvas id="gameCanvas" aria-label="Juego de supervivencia"></canvas>
+<div id="startScreen" class="overlay"><div class="modal"><div class="hero">🧟‍♂️</div><p class="eyebrow">LA CIUDAD HA CAÍDO</p><h2>¿CUÁNTO <span>SOBREVIVIRÁS?</span></h2><p>Sobrevive a las hordas, reúne monedas, mejora tu magia y derrota al jefe cada cinco oleadas.</p><div class="features"><span>✨ Magia</span><span>🪙 Monedas</span><span>👹 Jefes</span></div><button id="startBtn" class="primary">▶ COMENZAR PARTIDA</button><small>PC: WASD o flechas · Móvil: controles inferiores</small></div></div>
+<div id="gameOverScreen" class="overlay hidden"><div class="modal"><div class="hero">💀</div><p class="eyebrow">FIN DE LA PARTIDA</p><h2>¡INTÉNTALO <span>OTRA VEZ!</span></h2><p id="finalStats">Puntuación: 0</p><button id="restartBtn" class="primary">🔄 VOLVER A JUGAR</button></div></div>
+<div id="waveBanner" class="banner hidden"></div><div id="bossWarning" class="boss hidden">⚠ ¡JEFE ZOMBI! ⚠</div>
+</section>
+<section class="bottom">
+<div class="panel instructions"><h3>🎮 CONTROLES</h3><p><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> o flechas para moverte.</p><p>✨ Tu personaje lanza magia automáticamente al zombi más cercano.</p></div>
+<div class="panel shop"><h3>🛒 TIENDA DE MEJORAS</h3><div class="shop-items">
+<button class="upgrade" data-upgrade="damage"><span>🔥</span><div><b>Magia poderosa</b><small>Más daño por disparo</small></div><strong id="damageCost">20 🪙</strong></button>
+<button class="upgrade" data-upgrade="speed"><span>⚡</span><div><b>Velocidad mágica</b><small>Dispara más rápido</small></div><strong id="speedCost">25 🪙</strong></button>
+<button class="upgrade" data-upgrade="health"><span>💚</span><div><b>Poción curativa</b><small>Recupera 35 de vida</small></div><strong id="healthCost">15 🪙</strong></button>
+</div><p id="shopMessage" aria-live="polite">¡Derrota zombis para ganar monedas!</p></div>
+</section>
+<nav class="mobile-controls" aria-label="Controles táctiles"><div class="dpad"><button data-key="ArrowUp" class="up">▲</button><button data-key="ArrowLeft" class="left">◀</button><button data-key="ArrowDown" class="down">▼</button><button data-key="ArrowRight" class="right">▶</button></div><small>MANTÉN PULSADO PARA MOVERTE</small></nav>
+<footer>SUPERVIVENCIA ZOMBIE 2D · ¡SOBREVIVE SI PUEDES!</footer>
+</main><script src="script.js"></script>
+</body></html>
