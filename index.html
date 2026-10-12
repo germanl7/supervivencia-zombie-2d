@@ -1,65 +1,45 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#182d24">
-  <title>Supervivencia Salvaje — Arena 2D</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101510">
+<title>Zona Cero — Supervivencia 2D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="app">
-    <header class="topbar">
-      <a class="brand" href="#" aria-label="Supervivencia Salvaje inicio"><span class="brand-icon">🥒</span><span>SUPERVIVENCIA <b>SALVAJE</b></span></a>
-      <div class="top-stats">
-        <span class="pill">🪙 <b id="coinCount">0</b></span>
-        <span class="pill">🏆 OLEADA <b id="waveTop">1</b></span>
+<main id="app">
+  <section id="menu" class="screen menu-screen">
+    <div class="menu-bg"></div><div class="menu-grain"></div>
+    <header class="brand"><span class="brand-mark">Z</span><div><strong>ZONA CERO</strong><small>PROTOCOLO DE SUPERVIVENCIA</small></div><span class="status"><i></i> SISTEMA ACTIVO</span></header>
+    <div class="menu-content">
+      <div class="menu-copy"><div class="eyebrow"><span></span> EL MUNDO HA CAÍDO</div><h1>SOBREVIVE<br><em>A LA HORDA.</em></h1><p>Una ciudad abandonada. Oleadas interminables. Cada minuto cuenta. Reúne experiencia, mejora tu equipo y aguanta hasta el amanecer.</p>
+      <button id="play" class="primary-btn">INICIAR MISIÓN <b>↗</b></button>
+      <div class="controls-hint"><span>W A S D</span> PARA MOVERTE <i></i><span>RATÓN</span> DISPARO AUTOMÁTICO</div></div>
+      <div class="poster-art" aria-label="Ilustración original de un superviviente enfrentando criaturas caricaturescas">
+        <div class="moon"></div><div class="city city-back"></div><div class="city city-front"></div><div class="ground-lines"></div>
+        <div class="art-zombie z1">☣</div><div class="art-zombie z2">☣</div><div class="art-zombie z3">☣</div>
+        <div class="art-hero"><div class="hero-pack"></div><div class="hero-head"><span></span></div><div class="hero-body"><i></i></div><div class="hero-leg l1"></div><div class="hero-leg l2"></div><div class="hero-tool"></div></div>
+        <div class="poster-label"><b>SECTOR 07</b><span>CIUDAD EN CUARENTENA</span></div>
+        <div class="poster-stamp">NO<br>HAY<br>RESCATE</div>
       </div>
-    </header>
-
-    <section id="menuScreen" class="menu-screen">
-      <div class="hero-copy">
-        <span class="eyebrow">¡LA HORDA SE ACERCA!</span>
-        <h1>SOBREVIVE<br><em>COMO PUEDAS</em></h1>
-        <p>Corre, consigue experiencia, mejora tu equipo y resiste todas las oleadas.</p>
-        <div class="hero-actions">
-          <button id="playBtn" class="btn btn-primary">▶ JUGAR AHORA</button>
-          <button id="howBtn" class="btn btn-ghost">¿CÓMO JUGAR?</button>
-        </div>
-        <div id="howText" class="how-text hidden">Muévete con WASD o las flechas. Tu héroe dispara automáticamente al enemigo más cercano. Recoge las gemas, sube de nivel y elige mejoras.</div>
-      </div>
-      <div class="hero-art" aria-label="Héroe caricaturesco en una arena">
-        <div class="sun"></div><div class="floating f1">⚡</div><div class="floating f2">💎</div>
-        <div class="hero-shadow"></div>
-        <div class="hero-character"><div class="hero-hat">🧢</div><div class="hero-face">🥒</div><div class="hero-body">🦺</div><div class="hero-boots">👢</div></div>
-        <div class="enemy e1">🧟</div><div class="enemy e2">👾</div><div class="enemy e3">🧟</div>
-        <span class="art-tag">HÉROE #01</span>
-      </div>
-      <div class="feature-row">
-        <div class="feature"><span>🔫</span><b>ARMAS</b><small>Mejora tu arsenal</small></div>
-        <div class="feature"><span>🧪</span><b>MEJORAS</b><small>Hazte más fuerte</small></div>
-        <div class="feature"><span>👹</span><b>JEFES</b><small>Enfrenta la horda</small></div>
-      </div>
-    </section>
-
-    <section id="gameScreen" class="game-screen hidden">
-      <div class="hud">
-        <div class="hud-left"><span class="hud-label">OLEADA <b id="wave">1</b></span><span class="hud-label">NIVEL <b id="level">1</b></span></div>
-        <div class="health-wrap"><span>❤️ <b id="hpText">100/100</b></span><div class="bar"><i id="hpBar"></i></div></div>
-        <div class="hud-right"><span>🪙 <b id="coins">0</b></span><button id="pauseBtn" class="icon-btn" aria-label="Pausar">Ⅱ</button></div>
-      </div>
-      <div class="arena-wrap"><canvas id="gameCanvas" width="960" height="600" aria-label="Zona de juego"></canvas>
-        <div id="toast" class="toast hidden"></div>
-        <div id="upgradePanel" class="overlay hidden"><div class="modal"><span class="eyebrow">¡SUBISTE DE NIVEL!</span><h2>ELIGE UNA MEJORA</h2><p>Selecciona una ventaja para seguir sobreviviendo.</p><div id="upgradeChoices" class="upgrade-choices"></div></div></div>
-        <div id="pausePanel" class="overlay hidden"><div class="modal"><span class="eyebrow">PAUSA</span><h2>TOMA AIRE</h2><p>La horda espera… por ahora.</p><button id="resumeBtn" class="btn btn-primary">CONTINUAR</button><button id="quitBtn" class="btn btn-ghost">SALIR AL MENÚ</button></div></div>
-        <div id="gameOverPanel" class="overlay hidden"><div class="modal"><span class="eyebrow">FIN DE LA PARTIDA</span><h2>¡BUEN INTENTO!</h2><p id="resultText">Llegaste a la oleada 1.</p><button id="againBtn" class="btn btn-primary">VOLVER A JUGAR</button><button id="menuBtn" class="btn btn-ghost">MENÚ PRINCIPAL</button></div></div>
-      </div>
-      <div class="game-footer"><span>⌨️ WASD / FLECHAS para moverte</span><span>✨ Recoge gemas para subir de nivel</span><span id="enemyCount">Enemigos: 0</span></div>
-    </section>
-    <footer>UN JUEGO ORIGINAL DE SUPERVIVENCIA 2D · HECHO PARA JUGAR EN NAVEGADOR</footer>
-  </main>
-  <script src="script.js"></script>
+    </div>
+    <footer class="menu-footer"><span>UNA EXPERIENCIA DE SUPERVIVENCIA 2D</span><span>BUILD 0.2.6 <i></i> OFFLINE</span></footer>
+  </section>
+  <section id="game" class="screen game-screen hidden">
+    <canvas id="arena"></canvas>
+    <div class="hud-top"><div class="hud-logo"><span>Z</span><b>ZONA CERO</b></div><div class="hud-stat"><small>OLEADA</small><strong id="wave">01</strong></div><div class="hud-stat"><small>TIEMPO</small><strong id="time">00:00</strong></div><div class="hud-stat coins"><small>CHATARRA</small><strong>◆ <span id="coins">0</span></strong></div><button id="pause" class="pause-btn" aria-label="Pausar">Ⅱ</button></div>
+    <div class="mission-panel"><small>OBJETIVO ACTUAL</small><strong>SOBREVIVE A LA HORDA</strong><div class="health-track"><span id="healthbar"></span></div><span id="healthtext">100 / 100 HP</span></div>
+    <div class="xp-panel"><div class="xp-label"><span>EXPERIENCIA</span><b id="level">NV. 1</b></div><div class="xp-track"><span id="xpbar"></span></div></div>
+    <div id="tip" class="tip">MUEVETE · RECOGE CRISTALES · SOBREVIVE</div>
+    <div id="pauseOverlay" class="overlay hidden"><div class="modal"><small>PROTOCOLO DETENIDO</small><h2>PAUSA</h2><button id="resume" class="primary-btn">CONTINUAR ↗</button><button id="quit" class="secondary-btn">VOLVER AL MENÚ</button></div></div>
+    <div id="upgradeOverlay" class="overlay hidden"><div class="modal upgrade-modal"><small>EVOLUCIÓN DISPONIBLE</small><h2>ELIGE UNA MEJORA</h2><div id="upgradeChoices" class="upgrade-choices"></div></div></div>
+    <div id="overOverlay" class="overlay hidden"><div class="modal"><small>FIN DE LA MISIÓN</small><h2>HAS CAÍDO.</h2><p id="finalStats">La ciudad sigue en cuarentena.</p><button id="again" class="primary-btn">INTENTAR DE NUEVO ↗</button><button id="backMenu" class="secondary-btn">VOLVER AL MENÚ</button></div></div>
+    <div class="mobile-pad" id="mobilePad"><button data-dir="up">▲</button><div><button data-dir="left">◀</button><button data-dir="down">▼</button><button data-dir="right">▶</button></div></div>
+  </section>
+</main>
+<script src="script.js"></script>
 </body>
 </html>
